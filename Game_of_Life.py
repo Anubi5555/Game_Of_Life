@@ -20,6 +20,7 @@ from cell import Cell
 from random import randint
 
 class Board:
-    def __init__(self, vrste, kolone):
-        self._vrste = vrste 
-        self._kolone = kolone
+    def __init__(self, rows, columns):
+        self._rows = rows 
+        self._columns = columns
+        self._grid = [[Cell() for column_cells in range(self._columns)] for rows_cells in range(self._rows)]
