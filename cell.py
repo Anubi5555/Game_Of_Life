@@ -1,8 +1,24 @@
-import pygame
-pygame.init()
-prozor = pygame.display.set_mode((1000, 500))
-prozor.fill(pygame.Color("white"))
-#pygame.draw.rect(prozor, pygame.Color("black"), (20, 20, 160, 160), 5)
-pygame.display.update()
-pygame.time.wait(3000)
-pygame.quit()
+class Cell:
+    def __init__(self):
+        
+        self._status = 'Dead'
+
+    def set_dead(self):
+        
+        self._status = 'Dead'
+
+    def set_alive(self):
+        
+        self._status = 'Alive'
+
+    def is_alive(self):
+        
+        if self._status == 'Alive':
+            return True
+        return False
+
+    def get_print_character(self):
+        
+        if self.is_alive():
+            return 'O'
+        return '*'
