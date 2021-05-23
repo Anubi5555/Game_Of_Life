@@ -1,6 +1,67 @@
 import pygame
 import pygamebg
-size = (w, h) = 400, 400
-window = pygame.open_window(size, "Game of Life")
-
+import random
+import sys
+size = (w, h) = 600, 400
+window = pygame.display.set_mode(size)
 pygamebg.wait_loop()
+s = 10
+cols, rows = (window.get_width/s), int(window.get_height()/s)
+grid = []
+for i in range(rows):
+    arr = []
+    for j in range(cols):
+        arr.append(random.randint(0, 1))
+    grid.append(arr)
+
+def count(grid, x, y):
+    c = 0
+    for i in range(-1, 2):
+        for j in range(-1, 2):
+            col = (y+j+cols)%cols
+            row = (x+i+rows)%rows
+            c += grid[row][col]
+    c -= grid[x][y]
+    return c
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+   
+    window.fill((0, 0, 0))
+
+    for i in range(cols):
+        for j in range(rows):
+            x = i * s
+            y = j * s
+            if grid[j][i] == 1:
+                pygame.draw.rect(window, (255, 255, 255), (x, y, s, s))
+            elif grid[j][i] == 0:
+                pygame.draw.rect(window, (0, 0, 0), (x, y, s, s))
+            pygame.draw.line(window, (20, 20, 20), (x,y), (x, h))
+            pygame.draw.line(window, (20, 20, 20), (x,y), (w,y))
+    
+    new_grid = []
+    for i in range(rows):
+        arr = []
+        for j in range(cols):
+            arr.append(0)
+        new_grid.append(arr)
+
+    
+    for i in range(cols):
+        for j in range(rows):
+            neighbors = count(grid, j, i)
+            state = grid[j][i]
+            if state == 0 and neighbors == 3 :
+                new_grid[j][i] = 1
+            elif state == 1 and (neighbors < 2 or neighbors > 3):
+                new_grid[j][i] = 0
+            else:
+                new_grid[j][i] = state
+
+    grid = new_grid
+
+    pygame.display.flip()
+
